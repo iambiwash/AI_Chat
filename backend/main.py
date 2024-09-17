@@ -8,13 +8,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from decouple import config
 import openai
 
+# Import the custom functions here
+from functions.openai_requests import convert_audio_to_text, get_chat_response
+
+
 # Get Environment Vars
 openai.organization = config("OPEN_AI_ORG")
 openai.api_key = config("OPEN_AI_KEY")
 
-# Import the custom functions here
-
-from functions.openai_requests import convert_audio2txt
 
 #Initiate App
 app = FastAPI()
@@ -24,7 +25,6 @@ origins = [
     "https://localhost:5173",
     "https://localhost:5174",
     "https://localhost:4173",
-    "https://localhost:4174",
     "https://localhost:3000",
 ]
 
@@ -37,22 +37,30 @@ app.add_middleware(
     allow_headers = ["*"],
 )
 
-# Check Status
-@app.get("/status")
-async def post_audio():
-   print("Status Ok")
+# Check health Status
+@app.get("/health")
+async def check_health():
+   return {"response": "healthy"}
 
 # Get Audio 
-@app.get("/post-audio-get/")
+@app.get("/post-audio/")
 async def get_audio():
 
     # Get Saved Audio
     audio_input = open("my_voice.mp3", "rb")
 
     # Decode Audio to Text
-    decoded_audio_text = convert_audio2txt(audio_input)
+    message_decoded = convert_audio_to_text(audio_input)
 
-    print(decoded_audio_text)
+    # Guard: Ensure message was decoded 
+    if not message_decoded:
+        return HTTPException(status_code=400, detail= "Failed to decode the Audio.")
+    
+
+    # Get ChatGPT Response here
+    chat_response = get_chat_response(message_decoded)
+
+    print(chat_response)
 
     return "Audio Decoded"
 
