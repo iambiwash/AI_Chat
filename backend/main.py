@@ -22,12 +22,13 @@ openai.api_key = config("OPEN_AI_KEY")
 #Initiate App
 app = FastAPI()
 
+
 #CORS - Origin
 origins = [
-    "https://localhost:5173",
-    "https://localhost:5174",
-    "https://localhost:4173",
-    "https://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:4173",
+    "http://localhost:3000",
 ]
 
 #CORS - Origin
@@ -50,7 +51,6 @@ async def check_health():
 @app.get("/reset")
 async def reset_conversation():
    reset_messages()
-   return {"message": "Conversation Reset"}
 
 
 # Get Audio 
