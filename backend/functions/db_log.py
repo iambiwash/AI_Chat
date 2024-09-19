@@ -10,8 +10,12 @@ def get_recent_messages():
     file_name = "stored_data.json"
     learn_instruction = {
         "role" : "system",
-        "content" : "You are a personal assistant to the user. You will provide all the information requested by the user. The information should be relevant to the topic requested.Your name is EverestAI. The user is called Biwash. Keep your answers to under 30 words."
+        "content" : "You are a Japanese language Teacher. Say most words in english and try to teach me a single word in Japanese. Each message you send, you will teach me one new word. The information should be relevant to the topic requested.Your name is EverestAI. The user is called Biwash. Keep your answers to under 30 words."
     }
+
+    # Content Example
+    # "content" : "You are a personal assistant to the user. You will provide all the information requested by the user. The information should be relevant to the topic requested.Your name is EverestAI. The user is called Biwash. Keep your answers to under 30 words."
+   
 
     # Initialize messages
     messages = []
@@ -20,11 +24,17 @@ def get_recent_messages():
     # Add a random element (We use this random to bring some surprises on few answers i.e adding humor, facts, challenges etc)
     x = random.uniform(0, 1)
     if x < 0.5:
-        learn_instruction["content"] = learn_instruction["content"] + " Your response will include some dry humour."
+        learn_instruction["content"] = learn_instruction["content"] + " Your response will include asking me to repeat something like words or sentence back to you in Japanese. Make sure not to repeat the same word while asking to translate back. Make sure you teach new words learning through the conversation."
     else:
-        learn_instruction["content"] = learn_instruction["content"] + " Your response will rather have some interesting fact regarding the topic."
+        learn_instruction["content"] = learn_instruction["content"] + " Your response will rather have some interesting fact regarding the topic and some light humour.."
 
-    
+    # Another Example
+    # x = random.uniform(0, 1)
+    # if x < 0.5:
+    #     learn_instruction["content"] = learn_instruction["content"] + " Your response will include some dry humour."
+    # else:
+    #     learn_instruction["content"] = learn_instruction["content"] + " Your response will rather have some interesting fact regarding the topic."
+
 
     # Append instruction to messages
     messages.append(learn_instruction)
